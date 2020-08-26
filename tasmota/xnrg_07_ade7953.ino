@@ -131,6 +131,17 @@ void Ade7953GetData(void)
       reg[i >> 2][i &3] = value;
     }
   }
+  reg[0][0] = 173160 * 3; // TODO: CS
+  reg[0][1] = 61600 * 3; // TODO: CS
+  reg[0][2] = 61600 * 3; // TODO: CS
+  reg[0][3] = 0; // TODO: CS
+  reg[1][0] = 260000 * 3; // TODO: CS
+  reg[1][1] = 92400 * 3; // TODO: CS
+  reg[1][2] = 92400 * 3; // TODO: CS
+  reg[1][3] = 0; // TODO: CS
+  Ade7953.voltage_rms = 6000000; // TODO: CS
+  Ade7953.period = 4474; // TODO: CS
+
   AddLog_P2(LOG_LEVEL_DEBUG_MORE, PSTR("ADE: %d, %d, [%d, %d, %d, %d], [%d, %d, %d, %d]"),
     Ade7953.voltage_rms, Ade7953.period,
     reg[0][0], reg[0][1], reg[0][2], reg[0][3],
@@ -204,7 +215,7 @@ void Ade7953DrvInit(void)
   if (PinUsed(GPIO_ADE7953_IRQ)) {               // Irq on GPIO16 is not supported...
     delay(100);                                   // Need 100mS to init ADE7953
     Energy.separate_power_channels = true;
-    if (I2cSetDevice(ADE7953_ADDR)) {
+    if (I2cSetDevice(ADE7953_ADDR) || 1) {
       if (HLW_PREF_PULSE == Settings.energy_power_calibration) {
         Settings.energy_power_calibration = ADE7953_PREF;
         Settings.energy_voltage_calibration = ADE7953_UREF;
